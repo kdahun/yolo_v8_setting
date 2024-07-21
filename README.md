@@ -89,3 +89,6 @@ for box in result.boxes:
 plt.imshow(cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB))
 plt.show()
 ```
+
+![image](https://github.com/user-attachments/assets/2aecfd70-7ca1-420e-9dd2-3e872fcce282)
+
