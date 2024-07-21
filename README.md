@@ -1,5 +1,3 @@
-# yolo_v8_setting
-
 ## GPU 버전 확인
 cmd -> nvidia-smi
 
