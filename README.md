@@ -86,7 +86,55 @@ for box in result.boxes:
 # 결과 이미지 표시
 plt.imshow(cv2.cvtColor(original_img, cv2.COLOR_BGR2RGB))
 plt.show()
+
+
 ```
 
 ![image](https://github.com/user-attachments/assets/2aecfd70-7ca1-420e-9dd2-3e872fcce282)
+
+---
+
+# 02.person_detect
+
+```
+from ultralytics import YOLO
+import cv2
+model = YOLO("yolov8n.pt") # 원하는 크기 모델 입력(n ~ x)
+
+# 모델을 사용해 이미지 예측
+result = model.predict(source = "./frame/notebook/*.png", conf=0.5)
+
+```
+
+사전 학습된 80개의 클래스를 포함하여 COCO에서 학습된 yolyv8n.pt 모델을 사용해 result에 저장
+
+```
+import os
+import shutil
+
+# 폴더 생성
+person_predict_folder = "person_predict_notebook"
+if not os.path.exists(person_predict_folder):
+    os.makedirs(person_predict_folder)
+
+person_results=[]
+# 결과 처리
+for re in result:
+    # 각 예측 결과를 반복하여 사람 객체(cls==0)이 있는지 확인
+    has_person = any(int(cls) == 0 for cls in re.boxes.cls)
+
+    # 사람 객체가 있는 경우, 해당 이미지를 person_predict 폴더에 복사하여 저장
+    if has_person:
+        person_results.append(re)
+        # 원본 이미지 경로 가져오기
+        original_image_path = re.path
+        # 파일명만 추출
+        file_name = os.path.basename(original_image_path)
+        # 새 저장 경로 지정
+        new_path = os.path.join(person_predict_folder, file_name)
+        # 이미지 복사 및 저장
+        shutil.copy(original_image_path, new_path)
+
+```
+
 
